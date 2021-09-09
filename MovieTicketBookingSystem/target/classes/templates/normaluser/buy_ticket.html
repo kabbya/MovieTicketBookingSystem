@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="normaluser/base::layout(~{::section})">
+
+<head>
+	<meta charset = "UTF-8" />
+	<title> This is Movie Buying Page. </title>
+</head>
+<body>
+	<section>
+		<!--<h1> Welcome you are Normal User. </h1>
+		<h1> User Name <span th:text="${user.name}"> </span> </h1>
+		<h1> User Email <span th:text="${user.email}"> </span> </h1>
+		<h1> Movie Name <span th:text="${movieticket.name}"> </span> </h1>
+		<h1> Movie id <span th:text="${movieticket.id}"> </span> </h1>
+		-->
+		
+		<div class="card-body">
+				
+				<div class="container-fluid m1-1">
+				
+					<div class="row">
+						
+						<div class="col-md-10 offset-md-1">
+							<form action="#" 
+								th:object="${movieticket}"
+								enctype="multipart/form-data"
+								method="POST"
+								th:action="@{'/user/process-buy-ticket/'+${movieticket.id}}"
+						
+							>
+							
+							<div class="input-group mt-3 ">
+
+
+								<input
+									name="quantity"
+	      							type="number"
+	      							class="form-control"
+	      							id="seat_counter_field"
+	      							placeholder="Enter how many seat you want to buy"
+	      							required
+	      						/>
+
+							</div>
+							
+							<!--Movie Name-->
+							<div class="container text-center mb-3">
+									
+								<button class="btn btn-outline-primary"> Upload Movie </button>
+								
+							</div>
+							
+							</form>
+								
+						</div>
+					
+					</div>
+				
+				</div>		
+				
+			</div>
+			
+		</div>
+		
+	</section>
+	
+</body>
+</html>
