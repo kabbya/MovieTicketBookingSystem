@@ -9,6 +9,7 @@ import java.nio.file.StandardCopyOption;
 import java.security.Principal;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 
@@ -32,6 +33,7 @@ import com.movie.dao.UserRepository;
 import com.movie.entities.Movieticket;
 import com.movie.entities.User;
 import com.movie.helper.Message;
+
 
 @Controller
 @RequestMapping("/admin")
@@ -82,8 +84,7 @@ public class AdminController {
 			HttpSession session) {
 		
 		try {
-			
-			
+				
 			movieticket.setTotalSeat(movieticket.getSeatRemaining());
 			System.out.println("Data " + movieticket);
 			
@@ -140,5 +141,108 @@ public class AdminController {
 		m.addAttribute("totalPages",movietickets.getTotalPages());
 		
 		return "adminuser/show_movies";
+	}
+	
+	@GetMapping("/show-previous-movies/{page}")
+	public String showPreviousMovies(@PathVariable("page") Integer page, Model m) {
+		
+		m.addAttribute("title", "Movie list Admin view");
+		
+		LocalDate localDate = LocalDate.now(); 
+	    Date date = Date.valueOf(localDate);
+	    
+	    Pageable pageable =  PageRequest.of(page, 5);
+	    
+	    Page<Movieticket> movietickets = this.movieticketRepository.findByDateLessThanEqualOrderByDateAsc(date,pageable);
+		
+		movietickets.forEach( e->{
+			System.out.println(e);
+		});
+		
+		m.addAttribute("movietickets", movietickets);
+		m.addAttribute("currentPage",page);
+		m.addAttribute("totalPages",movietickets.getTotalPages());
+		
+		return "adminuser/show_previous_movies";
+	}
+	
+	// delating movie
+	
+	@GetMapping("/delete/{id}")
+	public String deleteMovie(@PathVariable("id") Integer id, Model model, HttpSession session) {
+		
+		Optional <Movieticket> movieTiketOptional = this.movieticketRepository.findById(id);
+		Movieticket movieticket = movieTiketOptional.get();
+		System.out.println(movieticket.getTotalSeat());
+
+		System.out.println(movieticket.getSeatRemaining());
+		if(movieticket.getTotalSeat()!=movieticket.getSeatRemaining()) {
+			session.setAttribute("message", new Message("Unsuccessfull attempt.", "danger"));
+		}
+		
+		else {
+			this.movieticketRepository.delete(movieticket);
+			session.setAttribute("message", new Message("Movie Deleted Successfully.", "success"));
+
+		}
+		
+		return "redirect:/admin/show-movies/0";
+		
+	}
+	
+	// uploading movie
+	
+	@GetMapping("/update-movie/{id}")
+	public String updateForm(@PathVariable("id") Integer id,Model m) {
+		
+		m.addAttribute("Title","Update Movie");
+		Optional <Movieticket> movieTiketOptional = this.movieticketRepository.findById(id);
+		Movieticket movieticket = movieTiketOptional.get();
+		m.addAttribute("movieticket", movieticket);
+		return "adminuser/update_form";
+	}
+	
+	
+	// update movie
+	
+	@PostMapping("/process-movie-update")
+	public String movieUpdateProcess(
+			@ModelAttribute Movieticket movieticket,
+			@RequestParam("profileImage") MultipartFile file,
+			Model m, HttpSession session) {
+		
+		Optional <Movieticket> movieTiketOptional = this.movieticketRepository.findById(movieticket.getId());
+		Movieticket oldMovieTicket = movieTiketOptional.get();
+		
+		try {
+			if(!file.isEmpty()) {
+				
+				//delete
+				File deleteFile =  new ClassPathResource("static/img").getFile();
+				File file1= new File(deleteFile, oldMovieTicket.getMovieImage());
+				file1.delete();
+				
+				
+				//update
+				File saveFile =  new ClassPathResource("static/img").getFile();
+				Path path =   Paths.get(saveFile.getAbsolutePath()+File.separator+file.getOriginalFilename());
+				Files.copy(file.getInputStream(), path , StandardCopyOption.REPLACE_EXISTING);
+				movieticket.setMovieImage(file.getOriginalFilename());
+			}
+			
+			else {
+				movieticket.setMovieImage(oldMovieTicket.getMovieImage());
+			}
+			
+			this.movieticketRepository.save(movieticket);		
+			session.setAttribute("message", new Message("Movie Updated Successfully.", "success"));
+
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println("Update :"+ movieticket);
+		return "adminuser/update_form";
 	}
 }

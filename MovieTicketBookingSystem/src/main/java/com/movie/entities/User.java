@@ -2,12 +2,16 @@ package com.movie.entities;
 
 
 import java.sql.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -41,6 +45,10 @@ public class User {
 	
 	private String imgUrl;
 	private int refundAmount;
+	
+	
+	@OneToMany(cascade = CascadeType.ALL,fetch =FetchType.LAZY)
+	private List<Purchase> purchase;
 	
 	public User() {
 		super();
@@ -146,6 +154,14 @@ public class User {
 		this.refundAmount = refundAmount;
 	}
 
+	public List<Purchase> getPurchase() {
+		return purchase;
+	}
+
+	public void setPurchase(List<Purchase> purchase) {
+		this.purchase = purchase;
+	}
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", phone=" + phone
@@ -153,6 +169,7 @@ public class User {
 				+ ", enable=" + enable + ", imgUrl=" + imgUrl + ", refundAmount=" + refundAmount + "]";
 	}
 
+	
 	
 	
 	

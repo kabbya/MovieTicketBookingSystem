@@ -30,9 +30,10 @@
 									<h3 class="mt-3"> <pre>Genre           <span> <i class="fas fa-compact-disc"></i> </span><span th:text= "${movieticket.genre}"> </span> </pre> </h3> 	 	
 									<h3 class="mt-3"> <pre>Date            <span> <i class="far fa-calendar-alt"></i> <span th:text= "${movieticket.date}"> </span> </pre> </h3> 	
 									<h3 class="mt-3"> <pre>Start Time      <span> <i class="far fa-clock"></i> </span><span th:text= "${movieticket.startTime}"> </span></pre> </h3> 	
-									<h3 class="mt-3"> <pre>Seat Remaining  <span> <i class="fas fa-user"></i> </span><span th:text= "${movieticket.seatRemaining}"> </span></pre> </h3> 	
+									<h3 class="mt-3"> <pre>Seat Booked     <span> <i class="fas fa-user"></i> </span><span th:text= "${purchase.quantity}"> </span></pre> </h3> 	
 									<h3 class="mt-3"> <pre>Ticket Price    <span> <i class="fas fa-hand-holding-usd"></i> </span><span th:text= "${movieticket.ticketPrize}"> </span> Taka</pre> </h3> 	
-									
+									<h3 class="mt-3"> <pre>Paid amount    <span> <i class="fas fa-money-bill-wave"></i> </span><span th:text= "${movieticket.ticketPrize}*${purchase.quantity}"> </span> Taka</pre> </h3> 	
+								
 								</div>			
 							</div>
 							
@@ -40,9 +41,11 @@
 								<form action="#" 
 									th:object="${purchase}"
 									method="POST"
-									th:action="@{'/user/process-buy-ticket/'+${movieticket.id}}"
+									th:action="@{'/user/process-refund-ticket/'+${purchase.id}}"
 							
 								>
+								
+							
 								
 								<!--Movie seat Quantity-->
 								
@@ -54,7 +57,7 @@
 			      							type="number"
 			      							class="form-control"
 			      							id="seat_counter_field"
-			      							placeholder="Enter how many seat you want to buy"
+			      							placeholder="Enter how many seat you want to Refund"
 			      							required
 			      						/>
 		
@@ -63,7 +66,7 @@
 									
 								<div class="container text-center mb-3 mt-3">
 										
-									<button class="btn btn-lg btn-outline-primary bg-primary text-white "> Buy Movie Ticket </button>
+									<button class="btn btn-lg btn-outline-primary bg-primary text-white "> Refund Movie Ticket </button>
 									
 								</div>
 								

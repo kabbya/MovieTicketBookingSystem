@@ -35,6 +35,13 @@ public class Purchase {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	public Purchase(User user, Movieticket movieticket) {
+		
+		this.user = user;
+		this.movieticket = movieticket;
+		
+	}
 
 	public int getId() {
 		return id;

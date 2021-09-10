@@ -22,8 +22,8 @@
       								<th scope="col">Date</th>
       								<th scope="col">Start Time</th>
       						      	<th scope="col">Ticket Prize</th>
-      						      	<th scope="col">Seat Remaining</th>
-      						      	<th scope="col">Action</th>
+      						      	<th scope="col">Seat booked</th>      						 
+      						      	<th scope="col">Total seat</th>
       						      	
     							</tr>
   							</thead>
@@ -38,14 +38,8 @@
       							<td th:text="${c.date}"></td>
       							<td th:text="${c.startTime}"></td>
       							<td th:text="${c.ticketPrize}"></td>
-      							<td th:text="${c.seatRemaining}"></td>
-      							<td>
-      								
-      								<a th:href = "@{'/admin/update-movie/'+${c.id}}" class="btn btn-primary btn-sm"> Update </a>
-      								<a th:href = "@{'/admin/delete/'+${c.id}}" class="btn btn-danger btn-sm"> Delete </a>
-      								
-      							</td>
-      							
+      							<td th:text="${c.totalSeat} - ${c.seatRemaining}"></td> 
+      							<td th:text="${c.totalSeat}"></td>      							
    							</tr>
     						
   						</tbody>
@@ -57,17 +51,17 @@
 					
 						  <ul class="pagination">
 							    <li th:if="${currentPage != 0}" class="page-item">
-							    <a th:href="@{'/admin/show-movies/'+${currentPage-1}}"  class="page-link" href="#">Previous</a></li>
+							    <a th:href="@{'/admin/show-previous-movies/'+${currentPage-1}}"  class="page-link" href="#">Previous</a></li>
 							    
 							    <li th:classappend="${currentPage==iter-1?'active':''}"
 							    th:each="iter : ${#numbers.sequence(1,totalPages)}" 
 							    class="page-item">
-							    <a th:href="@{'/admin/show-movies/'+${iter-1}}" class="page-link" href="#"> 
+							    <a th:href="@{'/admin/show-previous-movies/'+${iter-1}}" class="page-link" href="#"> 
 							    <span th:text="${iter}"> </span>
 							    </a></li>
 							    
 							    <li th:if="${currentPage+1 != totalPages}" class="page-item">
-							    <a th:href="@{'/admin/show-movies/'+${currentPage+1}}" class="page-link" href="#">Next</a></li>
+							    <a th:href="@{'/admin/show-previous-movies/'+${currentPage+1}}" class="page-link" href="#">Next</a></li>
 							</ul>
 					
 					</nav>

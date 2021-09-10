@@ -41,8 +41,8 @@
       							<td th:text="${c.seatRemaining}"></td>
       							<td>
       								
-      								<button class="btn btn-primary btn-sm"> Update </button>
-      								<button class="btn btn-danger btn-sm"> Delete </button>
+      								<a th:href = "@{'/admin/update-movie/'+${c.id}}" class="btn btn-primary btn-sm"> Update </a>
+      								<a th:href = "@{'/admin/delete/'+${c.id}}" class="btn btn-danger btn-sm"> Delete </a>
       								
       							</td>
       							

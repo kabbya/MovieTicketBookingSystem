@@ -15,6 +15,7 @@ public interface MovieticketRepository extends JpaRepository<Movieticket, Intege
 	
 	public List<Movieticket> findByDate(Date date);
 	
+	
 	/*
 	 * public List<Movieticket> findByDateGreaterThanEqual(Date date);
 	 */
@@ -22,5 +23,8 @@ public interface MovieticketRepository extends JpaRepository<Movieticket, Intege
 	//currentPage-page
 	//movie per page - 5
 	public Page<Movieticket> findByDateGreaterThanEqualOrderByDateAsc(Date date, Pageable pePageable);
+	
+	public Page<Movieticket> findByDateLessThanEqualOrderByDateAsc(Date date, Pageable pePageable);
+	
 
 }
